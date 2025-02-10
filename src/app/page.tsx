@@ -9,8 +9,17 @@ export default function Home() {
   
   const [weather, setWeather] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [offline, setOffline] = useState<boolean>(false);
 
   useEffect(() => {
+    if(!navigator.onLine) {
+      setOffline(true);
+      const cachedWeather = localStorage.getItem("lastWeather");
+      setWeather(cachedWeather ?? "No internet connection.");
+      setLoading(false);
+      return;
+    }
+
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(async (position) => {
         const { latitude, longitude } = position.coords;
@@ -25,9 +34,14 @@ export default function Home() {
           } else {
             setWeather("No, better keep it up.");
           }
+
+          const weatherText = temperature > 15 && windspeed < 20 && precipitation < 1 ? "Yes! Enjoy the ride!" : "No, better keep it up.";
+          setWeather(weatherText);
+          localStorage.setItem("lastWeather", weatherText);
         } catch (error) {
           console.error("Error fetching weather:", error);
-          setWeather("Couldn't fetch weather data.");
+          const cachedWeather = localStorage.getItem("lastWeather");
+          setWeather(cachedWeather || "Couldn't fetch weather data.");
         } finally {
           setLoading(false);
         }
@@ -51,6 +65,7 @@ export default function Home() {
           ): (
             <CloudIcon className="h-16 w-16 text-blue-400" />
           )}
+          {offline && <p className="mt-4 text-xl font-semibold text-error dark:text-error-dark"></p>}
           <p className="mt-4 text-xl font-semibold text-highlight">{weather}</p>
         </div>
       )}
