@@ -14,6 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+      </head>
       <body
         className="bg-background-light text-text-light dark:bg-background-dark dark:text-text-dark">
         {children}

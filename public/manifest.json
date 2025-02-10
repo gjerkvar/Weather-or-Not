@@ -1,0 +1,35 @@
+{
+    "name": "Weather or Not",
+    "short_name": "Weather or Not",
+    "description": "A PWA that tells you if you should drive with your top down today!",
+    "icons": [
+      {
+        "src": "/logo-192x192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "/logo-512x512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "screenshots": [
+      {
+        "src": "/screenshot-wide.png",
+        "type": "image/png",
+        "sizes": "1673x997",
+        "form_factor": "wide"
+      },
+      {
+        "src": "/screenshot-mobile.png",
+        "type": "image/png",
+        "sizes": "377x669"
+      }
+    ],
+    "start_url": "/",
+    "background_color": "#111827",
+    "display": "standalone",
+    "theme_color": "#111827"
+  }
+  
