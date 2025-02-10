@@ -3,7 +3,6 @@
 import { ThemeToggle } from "@/components/ThemeToggle/ThemeToggle.component";
 import { CloudIcon, SunIcon } from "@heroicons/react/16/solid";
 import axios from "axios";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function Home() {
