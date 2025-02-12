@@ -41,7 +41,7 @@ export default function Home() {
         } catch (error) {
           console.error("Error fetching weather:", error);
           const cachedWeather = localStorage.getItem("lastWeather");
-          setWeather(cachedWeather || "Couldn't fetch weather data.");
+          setWeather(cachedWeather || "Couldn't fetch weather data.");
         } finally {
           setLoading(false);
         }

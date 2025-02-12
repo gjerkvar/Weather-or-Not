@@ -6,28 +6,28 @@ const withPWA = require("next-pwa")({
   runtimeCaching: [
     {
       urlPattern: /^https:\/\/api\.open-meteo\.com\/.*/,
-      handler: "NetworkFirst", // Always try fetching fresh data first
+      handler: "NetworkFirst",
       options: {
         cacheName: "weather-api-cache",
         expiration: {
           maxEntries: 10,
-          maxAgeSeconds: 60 * 30, // Cache API data for 30 minutes
+          maxAgeSeconds: 60 * 30,
         },
       },
     },
     {
       urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/,
-      handler: "CacheFirst", // Cache Google Fonts for offline use
+      handler: "CacheFirst",
       options: {
         cacheName: "google-fonts-cache",
         expiration: {
           maxEntries: 10,
-          maxAgeSeconds: 60 * 60 * 24 * 365, // Cache for 1 year
+          maxAgeSeconds: 60 * 60 * 24 * 365,
         },
       },
     },
     {
-      urlPattern: /.*/, // Cache all static assets (CSS, JS, Images)
+      urlPattern: /.*\.(?:css|js|woff2|png|jpg|jpeg|svg|gif|ico)$/, // ✅ Cache CSS, JS, fonts, and images
       handler: "StaleWhileRevalidate",
       options: {
         cacheName: "static-resources",
@@ -37,7 +37,49 @@ const withPWA = require("next-pwa")({
         },
       },
     },
+    {
+      urlPattern: /^\/$/, // ✅ Explicitly cache the home page `/`
+      handler: "StaleWhileRevalidate",
+      options: {
+        cacheName: "home-page-cache",
+        expiration: {
+          maxEntries: 1,
+          maxAgeSeconds: 60 * 60 * 24 * 7,
+        },
+        cacheableResponse: {
+          statuses: [200],
+        },
+      },
+    },
+    {
+      urlPattern: /.*/, // ✅ Cache all static assets (CSS, JS, images)
+      handler: "StaleWhileRevalidate",
+      options: {
+        cacheName: "static-resources",
+        expiration: {
+          maxEntries: 50,
+          maxAgeSeconds: 60 * 60 * 24 * 7,
+        },
+      },
+    },
+    {
+      urlPattern: /.*/, // ✅ Cache all other pages
+      handler: "StaleWhileRevalidate",
+      options: {
+        cacheName: "pages-cache",
+        expiration: {
+          maxEntries: 20,
+          maxAgeSeconds: 60 * 60 * 24 * 7,
+        },
+        cacheableResponse: {
+          statuses: [200],
+        },
+      },
+    },
   ],
+  fallbacks: {
+    document: "/", // ✅ Serve `page.tsx` as the offline fallback
+  },
 });
 
 const nextConfig = withPWA({
